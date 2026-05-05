@@ -1,9 +1,18 @@
-import { createSignal, onCleanup, splitProps } from 'solid-js';
-import type { JSX } from 'solid-js';
-import { Button, type ButtonProps } from './Button';
-import { twMerge } from 'tailwind-merge';
+import { createSignal, onCleanup, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
+import { Button, type ButtonProps } from "./Button";
+import { twMerge } from "tailwind-merge";
 
-interface DangerousButtonProps extends Omit<ButtonProps, 'childrenOutsideShadow' | 'onClick' | 'onKeyDown' | 'onKeyUp' | 'onPointerCancel' | 'onPointerDown' | 'onPointerLeave' | 'onPointerUp'> {
+interface DangerousButtonProps extends Omit<
+  ButtonProps,
+  | "onClick"
+  | "onKeyDown"
+  | "onKeyUp"
+  | "onPointerCancel"
+  | "onPointerDown"
+  | "onPointerLeave"
+  | "onPointerUp"
+> {
   onActivate?: () => void;
 }
 
@@ -12,10 +21,11 @@ const HOLD_DURATION = 750;
 const CLICK_DURATION = 180;
 const RESET_DELAY = 500;
 
-const nextStepProgress = (progress: number) => Math.min((Math.floor(progress * N_STEPS) + 1) / N_STEPS, 1);
+const nextStepProgress = (progress: number) =>
+  Math.min((Math.floor(progress * N_STEPS) + 1) / N_STEPS, 1);
 
 export function DangerousButton(props: DangerousButtonProps) {
-  const [local, buttonProps] = splitProps(props, ['onActivate']);
+  const [local, buttonProps] = splitProps(props, ["onActivate", "children"]);
   const [progress, setProgress] = createSignal(0);
   let pressStartedAt: number | null = null;
   let lastFrameAt: number | null = null;
@@ -90,7 +100,9 @@ export function DangerousButton(props: DangerousButtonProps) {
     event.preventDefault();
   };
 
-  const onPointerDown: JSX.EventHandler<HTMLButtonElement, PointerEvent> = (event) => {
+  const onPointerDown: JSX.EventHandler<HTMLButtonElement, PointerEvent> = (
+    event,
+  ) => {
     if (event.button !== 0) {
       return;
     }
@@ -98,9 +110,11 @@ export function DangerousButton(props: DangerousButtonProps) {
     press(event.timeStamp, event);
   };
 
-  const isActivationKey = (key: string) => key === ' ' || key === 'Enter';
+  const isActivationKey = (key: string) => key === " " || key === "Enter";
 
-  const onKeyDown: JSX.EventHandler<HTMLButtonElement, KeyboardEvent> = (event) => {
+  const onKeyDown: JSX.EventHandler<HTMLButtonElement, KeyboardEvent> = (
+    event,
+  ) => {
     if (!isActivationKey(event.key) || event.repeat) {
       return;
     }
@@ -109,7 +123,9 @@ export function DangerousButton(props: DangerousButtonProps) {
     press(event.timeStamp, event);
   };
 
-  const onKeyUp: JSX.EventHandler<HTMLButtonElement, KeyboardEvent> = (event) => {
+  const onKeyUp: JSX.EventHandler<HTMLButtonElement, KeyboardEvent> = (
+    event,
+  ) => {
     if (!isActivationKey(event.key)) {
       return;
     }
@@ -126,7 +142,7 @@ export function DangerousButton(props: DangerousButtonProps) {
   return (
     <Button
       {...buttonProps}
-      class={twMerge('relative', buttonProps.class)}
+      class={twMerge("relative", buttonProps.class)}
       onClick={onClick}
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
@@ -134,12 +150,13 @@ export function DangerousButton(props: DangerousButtonProps) {
       onPointerCancel={release}
       onPointerLeave={release}
       onPointerUp={release}
-      childrenOutsideShadow={
-        <span
-          class="absolute inset-y-0 left-0 bg-white/25 transition-[width] duration-200 ease-out"
-          style={{ width: `${progress() * 100}%` }}
-        />
-      }
-    />
+    >
+      <span
+        class="absolute inset-y-0 left-0 bg-white/25 transition-[width] duration-200 ease-out"
+        style={{ width: `${progress() * 100}%` }}
+      />
+
+      {local.children}
+    </Button>
   );
 }
