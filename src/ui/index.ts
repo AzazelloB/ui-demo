@@ -3,3 +3,7 @@ export { DangerousButton } from "./DangerousButton";
 export { Options } from "./Options";
 export { Select } from "./Select";
 export { Toggle } from "./Toggle";
+export { NumberInput } from "./NumberInput";
+export { TextInput } from "./TextInput";
+export { TextArea } from "./TextArea";
+export { SidePanel } from "./SidePanel";

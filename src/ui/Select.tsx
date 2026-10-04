@@ -209,17 +209,17 @@ export function Select(props: SelectProps) {
       {...groupProps}
       data-motion={motion() ?? "idle"}
       class={twMerge(
-        "select-track inline-grid grid-cols-[1fr_auto_1fr] items-center gap-1.5",
+        "select-track inline-grid grid-cols-[1fr_auto_1fr] items-center gap-1.5 tabular-nums",
         local.class,
       )}
     >
       <span
         aria-disabled={!hasPrev()}
         class={twMerge(
-          "group min-w-10 select-none px-2 text-right text-sm font-medium",
+          "group select-none px-2 text-right text-sm font-medium",
           hasPrev() ? "cursor-pointer" : "pointer-events-none",
         )}
-        style={{ width: `max(2.5rem, ${optionWidth()})` }}
+        style={{ width: `calc(${optionWidth()} + 1rem)` }}
         onClick={selectPrev}
       >
         <span
@@ -250,10 +250,10 @@ export function Select(props: SelectProps) {
       <span
         aria-disabled={!hasNext()}
         class={twMerge(
-          "group min-w-10 select-none px-2 text-left text-sm font-medium",
+          "group select-none px-2 text-left text-sm font-medium",
           hasNext() ? "cursor-pointer" : "pointer-events-none",
         )}
-        style={{ width: `max(2.5rem, ${optionWidth()})` }}
+        style={{ width: `calc(${optionWidth()} + 1rem)` }}
         onClick={selectNext}
       >
         <span

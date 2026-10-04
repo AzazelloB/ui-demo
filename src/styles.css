@@ -1,5 +1,36 @@
 @import "tailwindcss";
 
+@media (hover: hover) and (pointer: fine) {
+  .contextual-example .contextual-actions {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .contextual-example:hover .contextual-actions,
+  .contextual-example:focus-within .contextual-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.side-panel {
+  visibility: hidden;
+  transform: translateX(100%);
+  transition: transform 200ms ease-out, visibility 0s 200ms;
+}
+
+.side-panel[data-open="true"] {
+  visibility: visible;
+  transform: translateX(0);
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side-panel {
+    transition: none;
+  }
+}
+
 @theme {
   --color-background: #06172f;
   --color-surface: #0a2040;
